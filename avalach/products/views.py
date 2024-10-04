@@ -1,12 +1,13 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from .models import Product
-from .serializers import ProductSerializer
+from .serializers import ProductSerializer, ProductDetailSerializer
 from django.http import Http404
-from rest_framework import status
+from rest_framework import status, permissions
 
 
 class ProductList(APIView):
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def get(self, request):
         products = Product.objects.all()
@@ -33,3 +34,13 @@ class ProductDetail(APIView):
         product = self.get_object(pk)
         serializer = ProductSerializer(product)
         return Response(serializer.data)
+    
+    def put(self, request, pk):
+        product = self.get_object(pk)
+        serializer = ProductDetailSerializer(
+            instance=product,
+            data=request.data,
+            partial=True
+        )
+        if serializer.is_valid():
+            serializer.save()
