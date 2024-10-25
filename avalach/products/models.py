@@ -7,6 +7,10 @@ class Product(models.Model):
     Author = models.CharField(max_length=200)
     Synopsis = models.TextField()
     Price = models.FloatField()
-    owner = models.CharField(max_length=200)
+    owner = models.ForeignKey(
+        get_user_model(),
+        on_delete=models.CASCADE,
+        related_name='owned_projects'
+    )
         
     

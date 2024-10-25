@@ -5,3 +5,5 @@ class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = apps.get_model('products.Product')
         fields ='__all__'      
+
+#class ProductDetailSerializer(ProductSerializer):
